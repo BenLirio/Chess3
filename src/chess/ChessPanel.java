@@ -251,6 +251,7 @@ public class ChessPanel extends JPanel {
                                 history.add(new ChessModel(model));
                                 model.move(m);
                                 //model.AI();
+                                //Message
                                 if(model.inCheck(Player.WHITE)) {
                                     if (model.isComplete()) {
                                         JOptionPane.showMessageDialog(null, "Good Job!!!!\nBlack Has WON");
