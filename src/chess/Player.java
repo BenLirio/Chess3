@@ -1,5 +1,9 @@
 package chess;
 
+/**
+ * Enumeration of the player.
+ * @author Ben Lirio - used template.
+ */
 public enum Player {
     BLACK, WHITE;
 

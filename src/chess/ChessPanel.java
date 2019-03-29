@@ -6,35 +6,84 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+/**
+ * Chess panel holds all of the buttons and displays them to the current panel.
+ * This is not the visual nor the game but the data behind the visual.
+ * @author Ben Lirio - Used template
+ */
 public class ChessPanel extends JPanel {
 
+    /** Holds all of the buttons */
     private JButton[][] board;
+
+    /** Holds an instance of chess model */
     private ChessModel model;
+
+    /** All the previous models. */
     private ArrayList<ChessModel> history;
+
+    /** This button is used to back up in the game */
     private JButton backBtn;
 
+    /** Icon for white rook */
     private ImageIcon wRook;
+
+    /** Icon for white Bishop */
     private ImageIcon wBishop;
+
+    /** Icon for white queen */
     private ImageIcon wQueen;
+
+    /** Icon for white king */
     private ImageIcon wKing;
+
+    /** Icon for white pawn */
     private ImageIcon wPawn;
+
+    /** Icon for white knight */
     private ImageIcon wKnight;
+
+    /** Icon for black rook */
     private ImageIcon bRook;
+
+    /** Icon for black bishop */
     private ImageIcon bBishop;
+
+    /** Icon for black queen */
     private ImageIcon bQueen;
+
+    /** Icon for black king */
     private ImageIcon bKing;
+
+    /** Icon for black pawn */
     private ImageIcon bPawn;
+
+    /** Icon for black knight. */
     private ImageIcon bKnight;
 
+    /** Who gets to go first. */
     private boolean firstTurnFlag;
-    private int fromRow;
-    private int toRow;
-    private int fromCol;
-    private int toCol;
-    // declare other intance variables as needed
 
+    /**Used to record where the move came from */
+    private int fromRow;
+
+    /**used to see which row the move is going to */
+    private int toRow;
+
+    /** used to see which column the move came from */
+    private int fromCol;
+
+    /** Used to see to which column the row is going. */
+    private int toCol;
+
+    /**Used as an action listener */
     private listener listener;
 
+    /**
+     * Main constructor
+     * Creates all of the buttons and creates all behind the scenes allingning and ordering.
+     * Sets the size of the board.
+     */
     public ChessPanel() {
 
         history = new ArrayList<>();
@@ -70,6 +119,11 @@ public class ChessPanel extends JPanel {
         firstTurnFlag = true;
     }
 
+    /**
+     * Sets the background color of an individual tile
+     * @param r What row is the tile in?
+     * @param c What column is the tile in?
+     */
     private void setBackGroundColor(int r, int c) {
         board[r][c].setOpaque(true);
         board[r][c].setBorderPainted(false);
@@ -80,6 +134,11 @@ public class ChessPanel extends JPanel {
         }
     }
 
+    /**
+     * Switch case function that places a certain piece.
+     * @param r Row the piece should be placed.
+     * @param c Column the piece should be placed.
+     */
     private void placeWhitePieces(int r, int c) {
         if (model.pieceAt(r, c).type().equals("Pawn")) {
             board[r][c] = new JButton(null, wPawn);
@@ -107,6 +166,12 @@ public class ChessPanel extends JPanel {
         }
     }
 
+    /**
+     * Switch case function that places a certain piece.
+     * Same as above but for the black board.
+     * @param r Row the piece should be placed.
+     * @param c Column the piece should be placed.
+     */
     private void placeBlackPieces(int r, int c) {
         if (model.pieceAt(r, c).type().equals("Pawn")) {
             board[r][c] = new JButton(null, bPawn);
@@ -134,6 +199,9 @@ public class ChessPanel extends JPanel {
         }
     }
 
+    /**
+     * Retrieves all of the images from the folders that are responsible for holding the files.
+     */
     private void createIcons() {
         // Sets the Image for white player pieces
         wRook = new ImageIcon("./src/images/wRook.png");
@@ -150,7 +218,9 @@ public class ChessPanel extends JPanel {
         bKnight = new ImageIcon("./src/images/bKnight.png");
     }
 
-    // method that updates the board
+    /**
+     * Displays the current pieces and where they are, Newest and up to date data we can get.
+     */
     private void displayBoard() {
 
         for (int r = 0; r < 8; r++) {
@@ -204,7 +274,10 @@ public class ChessPanel extends JPanel {
         repaint();
     }
 
-    // inner class that represents action listener for buttons
+    /**
+     * This action listener can be viewd as the Code behind the GUI.
+     * Which button is pressed and how does that effect everything else.
+     */
     private class listener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
             if(backBtn == event.getSource()) {
@@ -250,8 +323,7 @@ public class ChessPanel extends JPanel {
                             if ((model.isValidMove(m)) == true) {
                                 history.add(new ChessModel(model));
                                 model.move(m);
-                                //model.AI();
-                                //Message
+                                model.AI();
                                 if(model.inCheck(Player.WHITE)) {
                                     if (model.isComplete()) {
                                         JOptionPane.showMessageDialog(null, "Good Job!!!!\nBlack Has WON");
